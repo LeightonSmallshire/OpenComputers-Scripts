@@ -5,12 +5,10 @@ component.proxy(component.list('internet')()),
 component.proxy(component.list('eeprom')())
 
 conn = inet.request(eeprom.getData())
-conn.finishConnect()
+repeat until conn.finishConnect()
 assert(conn.response() == 200)
-
-for m in conn.read do
-    code = code .. m
-end
+for m in conn.read do code = code .. m end
 conn.close()
 
+computer.beep(400, 0.1)
 load(code, 'MAIN', 'tb', _G)()
